@@ -21,7 +21,7 @@ rserver # ...
 ```
 
 
-* When using multiple users a unique `secret-cookie-key` has to be regenerated for each user. The path to the secret cookie key can be passed to `rserver` as a command line parameter.
+* When using multiple users a unique `secret-cookie-key` has to be generated for each user. The path to the secret cookie key can be passed to `rserver` as a command line parameter.
 ```
 uuid > /tmp/rstudio-server/${USER}_secure-cookie-key
 rserver # ...
