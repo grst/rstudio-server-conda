@@ -1,6 +1,6 @@
 # Howto run Rstudio Server in an Anaconda environment
 
-I usually rely on the [conda package manager]() to manage my environments during development. Thanks to [conda-forge] and [bioconda] most R packages are now also available through conda. 
+I usually rely on the [conda package manager]() to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. 
 
 Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This is why I came up with the two scripts in this repo. 
 
@@ -30,8 +30,9 @@ rserver # ...
 
 ## Installation and usage
 ### 1. Prerequisites
-* installed [rstudio server]
-* installed [uuid]
+* installed [rstudio server](https://www.rstudio.com/products/rstudio/download-server/)
+* installed [conda](https://docs.conda.io/en/latest/miniconda.html)
+* installed [uuid](https://linux.die.net/man/1/uuid) ("`sudo <PKG_MGR> install uuid")
 
 ### 2. Disable rstudio server service. 
 You might need to disable the system-wide Rstudio server service.
