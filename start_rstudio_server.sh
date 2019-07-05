@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##############################################
+# USAGE: ./start_rstudio_server <PORT>
+#   e.g. ./start_rstudio_server 8787
+##############################################
+
 CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 USER=`whoami`
 # set a user-specific secure cookie key
