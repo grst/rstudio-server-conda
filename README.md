@@ -56,3 +56,8 @@ git clone https://github.com/grst/rstudio-server-conda.git
 conda activate my_project
 ./start_rstudio_server.sh 8787  # use any free port number here. 
 ```
+
+You should now be able to connect to rstudio server on the port you specify. 
+
+Obviously, if your env does not have a version of `R` installed, this will either not 
+work at all, or fall back to the system-wide R installation. 
