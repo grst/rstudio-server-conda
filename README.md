@@ -4,30 +4,6 @@ I usually rely on the [conda package manager]() to manage my environments during
 
 Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This is why I came up with the two scripts in this repo. 
 
-## How it works
-* Rstudio server, can be started in non-daemonized mode by each user individually on a custom port (similar to a jupyter notebook). This instance can then run in a conda environment:
-```
-> conda activate my_project
-> /usr/lib/rstudio-server/bin/rserver \
-   --server-daemonize=0 \
-   --www-port 8787 \
-   --rsession-which-r=$(which R) \
-   --rsession-ld-library-path=$CONDA_PREFIX/lib
-```
-* To avoid additional problems with library paths, also `rsession` needs to run within the conda environment. This is achieved by wrapping `rsession` into the [rsession.sh](https://github.com/grst/rstudio-server-conda/blob/master/rsession.sh) script. The path to the wrapped `rsession` executable can be passed to `rserver` as command line argument. 
-```
-rserver # ...
-    --rsession-path=rsession.sh
-```
-
-
-* When using multiple users a unique `secret-cookie-key` has to be generated for each user. The path to the secret cookie key can be passed to `rserver` as a command line parameter.
-```
-uuid > /tmp/rstudio-server/${USER}_secure-cookie-key
-rserver # ...
-  --secure-cookie-key-file /tmp/rstudio-server/${USER}_secure-cookie-key
-```
-
 ## Installation and usage
 ### 1. Prerequisites
 * installed [rstudio server](https://www.rstudio.com/products/rstudio/download-server/)
@@ -61,3 +37,30 @@ You should now be able to connect to rstudio server on the port you specify. **I
 
 Obviously, if your env does not have a version of `R` installed, this will either not 
 work at all, or fall back to the system-wide R installation. 
+
+
+
+## How it works
+* Rstudio server, can be started in non-daemonized mode by each user individually on a custom port (similar to a jupyter notebook). This instance can then run in a conda environment:
+```
+> conda activate my_project
+> /usr/lib/rstudio-server/bin/rserver \
+   --server-daemonize=0 \
+   --www-port 8787 \
+   --rsession-which-r=$(which R) \
+   --rsession-ld-library-path=$CONDA_PREFIX/lib
+```
+* To avoid additional problems with library paths, also `rsession` needs to run within the conda environment. This is achieved by wrapping `rsession` into the [rsession.sh](https://github.com/grst/rstudio-server-conda/blob/master/rsession.sh) script. The path to the wrapped `rsession` executable can be passed to `rserver` as command line argument. 
+```
+rserver # ...
+    --rsession-path=rsession.sh
+```
+
+
+* When using multiple users a unique `secret-cookie-key` has to be generated for each user. The path to the secret cookie key can be passed to `rserver` as a command line parameter.
+```
+uuid > /tmp/rstudio-server/${USER}_secure-cookie-key
+rserver # ...
+  --secure-cookie-key-file /tmp/rstudio-server/${USER}_secure-cookie-key
+```
+
