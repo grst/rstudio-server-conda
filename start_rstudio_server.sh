@@ -11,6 +11,8 @@ USER=`whoami`
 COOKIE_KEY_PATH=/tmp/rstudio-server/${USER}_secure-cookie-key
 rm -f $COOKIE_KEY_PATH
 mkdir -p $(dirname $COOKIE_KEY_PATH)
+# if uuid is not available, uncomment the following line:
+alias uuid="python -c 'import uuid; print(uuid.uuid4())'"
 uuid > $COOKIE_KEY_PATH
 chmod 600 $COOKIE_KEY_PATH
 
