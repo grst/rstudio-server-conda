@@ -11,7 +11,7 @@ USER=`whoami`
 COOKIE_KEY_PATH=/tmp/rstudio-server/${USER}_secure-cookie-key
 rm -f $COOKIE_KEY_PATH
 mkdir -p $(dirname $COOKIE_KEY_PATH)
-uuid > $COOKIE_KEY_PATH
+python -c 'import uuid; print(uuid.uuid4())' > $COOKIE_KEY_PATH
 chmod 600 $COOKIE_KEY_PATH
 
 # store the currently activated conda environment in a file to be ready by rsession.sh
@@ -24,6 +24,6 @@ echo $CONDA_PREFIX > $CONDA_ENV_PATH
 /usr/lib/rstudio-server/bin/rserver --server-daemonize=0 \
   --www-port $1 \
   --secure-cookie-key-file $COOKIE_KEY_PATH \
-  --rsession-which-r=$(which R) \
-  --rsession-ld-library-path=$CONDA_PREFIX/lib \
-  --rsession-path="$CWD/rsession.sh"
+  --rsession-which-r $(which R) \
+  --rsession-ld-library-path $CONDA_PREFIX/lib \
+  --rsession-path "$CWD/rsession.sh"
