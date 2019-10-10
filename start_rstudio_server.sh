@@ -23,6 +23,8 @@ echo "## Current env is >>"
 echo $CONDA_PREFIX
 echo $CONDA_PREFIX > $CONDA_ENV_PATH
 
+export RETICULATE_PYTHON=$CONDA_PREFIX/bin/python
+
 /usr/lib/rstudio-server/bin/rserver --server-daemonize=0 \
   --www-port=$1 \
   --secure-cookie-key-file=$COOKIE_KEY_PATH \
