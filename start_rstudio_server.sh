@@ -24,6 +24,7 @@ echo $CONDA_PREFIX
 echo $CONDA_PREFIX > $CONDA_ENV_PATH
 
 export RETICULATE_PYTHON=$CONDA_PREFIX/bin/python
+export TERM=linux
 
 /usr/lib/rstudio-server/bin/rserver --server-daemonize=0 \
   --www-port=$1 \
