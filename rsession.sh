@@ -1,6 +1,5 @@
 #!/bin/bash
 
-CORES=8
 USER=`whoami`
 source /etc/profile
 
@@ -20,11 +19,5 @@ conda activate ${CONDA_ENV}
 
 export RETICULATE_PYTHON=$CONDA_PREFIX/bin/python
 export TERM=linux
-
-export OPENBLAS_NUM_THREADS=$CORES OMP_NUM_THREADS=$CORES  \
-       MKL_NUM_THREADS=$CORES OMP_NUM_cpus=$CORES  \
-       MKL_NUM_cpus=$CORES OPENBLAS_NUM_cpus=$CORES \
-       MKL_THREADING_LAYER=GNU
-
 
 /usr/lib/rstudio-server/bin/rsession $@
