@@ -1,4 +1,4 @@
-# Howto run Rstudio Server in an Anaconda environment
+# Howto run Rstudio Server in a Conda Environment
 
 I usually rely on the [conda package manager]() to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. 
 
