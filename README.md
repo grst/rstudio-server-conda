@@ -8,7 +8,6 @@ Unfortunately, there seems to be [no straightforward way](https://community.rstu
 ### 1. Prerequisites
 * installed [rstudio server](https://www.rstudio.com/products/rstudio/download-server/)
 * installed [conda](https://docs.conda.io/en/latest/miniconda.html)
-* installed [uuid](https://linux.die.net/man/1/uuid) ("`sudo <PKG_MGR> install uuid`")
 
 ### 2. Disable rstudio server service. 
 You might need to disable the system-wide Rstudio server service.
