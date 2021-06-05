@@ -23,10 +23,9 @@ else
 fi
 
 python -c 'import uuid; print(uuid.uuid4())' > $COOKIE_KEY_PATH
-# uuid > $COOKIE_KEY_PATH
 chmod 600 $COOKIE_KEY_PATH
 
-# store the currently activated conda environment in a file to be ready by rsession.sh
+# store the currently activated conda environment in a file to be read by rsession.sh
 CONDA_ENV_PATH=/tmp/rstudio-server/${USER}_current_env
 rm -f $CONDA_ENV_PATH
 echo "## Current env is >>"
