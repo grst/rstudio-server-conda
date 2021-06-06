@@ -1,8 +1,80 @@
-# Howto run Rstudio Server in a Conda Environment
+# Running Rstudio Server in a Conda Environment
 
-I usually rely on the [conda package manager]() to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. 
+I usually rely on the [conda package manager](https://docs.conda.io/en/latest/) to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. For production,
+I [convert them to containers](https://github.com/grst/containerize-conda) as these are easier to share. 
 
-Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This is why I came up with the two scripts in this repo. 
+Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This repository provides two approaches to make rstudio server work with conda envs. 
+
+## Running Rstudio Server in a Container
+
+With this approach Rstudio Server runs in a Docker container (based on [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)).  
+The conda environment gets mounted into the container - like that there's no need to rebuild the container to add a package and 
+`install.packages` can be used without issues. The container-based approach has the following benefits: 
+
+ * Authentication works (#3)
+ * Several separate instances of Rstudio server can run in parallel, even without the *Pro* version. 
+
+### Prerequisites
+
+ * [Docker](https://www.docker.com/) or [Podman](https://podman.io/)
+ * [docker-compose](https://github.com/docker/compose) or [podman-compose](https://github.com/containers/podman-compose)
+ * [conda](https://docs.conda.io/en/latest/miniconda.html) or [mamba](https://github.com/conda-forge/miniforge#mambaforge)
+
+### Usage
+
+1. Clone this repository
+
+   ```bash
+   git clone git@github.com:grst/rstudio-server-conda.git
+   ```
+
+2. Build the rstudio container (fetches the latest version of [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio) and adds some custom scripts)
+
+   ```bash
+   cd rstudio-server-conda/docker
+   docker-compose build     # or podman-compose
+   ```
+
+3. Copy the docker-compose.yml file into your project directory and adjust the paths.
+
+   You may want to add additional volumes with your data. 
+
+   ```yml
+   [...]
+      ports:
+         # port on the host : port in the container (the latter is always 8787)
+         - "8889:8787"
+       volumes:
+         # mount conda env into exactely the same path as on the host system - some paths are hardcoded in the env.
+         - /home/sturm/anaconda3/envs/R400:/home/sturm/anaconda3/envs/R400
+         # Share settings between rstudio instances
+         - /home/sturm/.local/share/rstudio/monitored/user-settings:/root/.local/share/rstudio/monitored/user-settings
+         # mount the working directory containing your R project.
+         - /home/sturm/projects:/projects
+       environment:
+         # password used for authentication
+         - PASSWORD=notsafe
+         # repeat the path of the conda environment (must be identical to the path in "volumes")
+         - CONDAENV=/home/sturm/anaconda3/envs/R400
+   ```
+
+4. Run your project-specific instance of Rstudio-server
+
+   ```bash
+   docker-compose up 
+   ```
+
+5. Log into Rstudio
+
+ * Open your server at `https://localhost:8889` (or whatever port you specified)
+ * Login with the user `rstudio` (when using Docker) or `root` (when using Podman) and the password you specified 
+   in the `docker-compose.yml`. If you are using Podman and login with `rstudio` you won't have permissions to 
+   access the mounted volumes. 
+
+
+## Running Locally
+
+With this approach a locally installed Rstudio Server is ran such that it uses the conda env. 
 
 ## Installation and usage
 ### 1. Prerequisites
