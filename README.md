@@ -5,6 +5,9 @@ I [convert them to containers](https://github.com/grst/containerize-conda) as th
 
 Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This repository provides two approaches to make rstudio server work with conda envs. 
 
+ * [Running Rstudio Server in a Container](#running-rstudio-server-in-a-container)
+ * [Running Rstudio Server locally](#running-locally)
+
 ## Running Rstudio Server in a Container
 
 With this approach Rstudio Server runs in a Docker container (based on [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)).  
