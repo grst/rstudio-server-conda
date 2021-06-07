@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  rstudio:
+    build: .
+    image: grst/rstudio-server-conda:latest
+    ulimits:
+      nofile: 10000
+    ports:
+      - "8889:8787"
+    volumes:
+      # mount conda env into exactely the same path as on the host system - some paths are hardcoded in the env.
+      - /home/sturm/anaconda3/envs/R400:/home/sturm/anaconda3/envs/R400
+      # Share settings between rstudio instances
+      - /home/sturm/.local/share/rstudio/monitored/user-settings:/root/.local/share/rstudio/monitored/user-settings
+      # mount the working directory containing your R project.
+      - /home/sturm/projects:/root/projects
+    environment:
+      - PASSWORD=notsafe
+      # repeat the path of the conda environment
+      - CONDAENV=/home/sturm/anaconda3/envs/R400
+
