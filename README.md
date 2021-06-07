@@ -74,64 +74,64 @@ The conda environment gets mounted into the container - like that there's no nee
 
 ## Running Locally
 
-With this approach a locally installed Rstudio Server is ran such that it uses the conda env. 
+With this approach a locally installed Rstudio server is ran such that it uses the conda env. 
+A known limitation of this approch is that the Rstudio authentication is bypassed (see #3). 
+Therefore, only use this approach in a secure network! 
 
-## Installation and usage
-### 1. Prerequisites
-* installed [rstudio server](https://www.rstudio.com/products/rstudio/download-server/)
-* installed [conda](https://docs.conda.io/en/latest/miniconda.html)
+### Prerequisites
+* [rstudio server](https://www.rstudio.com/products/rstudio/download-server/) installed locally
+* [conda](https://docs.conda.io/en/latest/miniconda.html) or [mamba](https://github.com/conda-forge/miniforge#mambaforge)
 
-### 2. Disable rstudio server service. 
-You might need to disable the system-wide Rstudio server service.
-Due to licensing restrictions of rstudio server community edition, only one rstudio process
-can run for each user simultaneously. 
+### Usage
 
-This is how it works on systemd-based systems:
+1. Clone this repo
 
-```bash
-sudo systemctl disable rstudio-server.service
-sudo systemctl stop rstudio-server.service
-```
+   ```
+   git clone https://github.com/grst/rstudio-server-conda.git
+   ```
 
-### 3. Clone this repo
-```
-git clone https://github.com/grst/rstudio-server-conda.git
-```
+2. Run rstudio server in the conda env
 
-### 4. Run rstudio server in the conda env
-```
-conda activate my_project
-./start_rstudio_server.sh 8787  # use any free port number here. 
-```
+   ```
+   cd rstudio-server-conda/local
+   conda activate my_project
+   ./start_rstudio_server.sh 8787  # use any free port number here. 
+   ```
+   
+3. Connect to Rstudio
 
-You should now be able to connect to rstudio server on the port you specify. **If an R Session has previously been running, you'll need to rstart the Rsession now**. 
+   You should now be able to connect to rstudio server on the port you specify. 
+   **If an R Session has previously been running, you'll need to rstart the Rsession now**. 
 
-Obviously, if your env does not have a version of `R` installed, this will either not 
-work at all, or fall back to the system-wide R installation. 
+   Obviously, if your env does not have a version of `R` installed, this will either not 
+   work at all, or fall back to the system-wide R installation. 
 
 
-
-## How it works
+### How it works
 * Rstudio server, can be started in non-daemonized mode by each user individually on a custom port (similar to a jupyter notebook). This instance can then run in a conda environment:
-```
-> conda activate my_project
-> /usr/lib/rstudio-server/bin/rserver \
-   --server-daemonize=0 \
-   --www-port 8787 \
-   --rsession-which-r=$(which R) \
-   --rsession-ld-library-path=$CONDA_PREFIX/lib
-```
+
+   ```
+   > conda activate my_project
+   > /usr/lib/rstudio-server/bin/rserver \
+      --server-daemonize=0 \
+      --www-port 8787 \
+      --rsession-which-r=$(which R) \
+      --rsession-ld-library-path=$CONDA_PREFIX/lib
+   ```
+   
 * To avoid additional problems with library paths, also `rsession` needs to run within the conda environment. This is achieved by wrapping `rsession` into the [rsession.sh](https://github.com/grst/rstudio-server-conda/blob/master/rsession.sh) script. The path to the wrapped `rsession` executable can be passed to `rserver` as command line argument. 
-```
-rserver # ...
-    --rsession-path=rsession.sh
-```
+
+   ```
+   rserver # ...
+       --rsession-path=rsession.sh
+   ```
 
 
 * When using multiple users a unique `secret-cookie-key` has to be generated for each user. The path to the secret cookie key can be passed to `rserver` as a command line parameter.
-```
-uuid > /tmp/rstudio-server/${USER}_secure-cookie-key
-rserver # ...
-  --secure-cookie-key-file /tmp/rstudio-server/${USER}_secure-cookie-key
-```
+
+   ```
+   uuid > /tmp/rstudio-server/${USER}_secure-cookie-key
+   rserver # ...
+     --secure-cookie-key-file /tmp/rstudio-server/${USER}_secure-cookie-key
+   ```
 
