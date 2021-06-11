@@ -30,15 +30,18 @@ The conda environment gets mounted into the container - like that there's no nee
 
     ```bash
     git clone git@github.com:grst/rstudio-server-conda.git
+    cd rstudio-server-conda/singularity
     ```
    
  2. Activate the target conda env or set the environment variable `CONDA_PREFIX`
     to point to the location of the conda env. 
+    
+ 3. Check the `run_singularity.sh` script. In particular, you may need to add additional bind mounts 
+    (e.g. a global data directory).   
  
  3. Execute the `run_singularity.sh` script. It will automatically build the container if it is not available. 
  
-    ```bash
-    cd rstudio-server-conda/singularity
+    ```bash    
     PORT=8787 PASSWORD=notsafe ./run_singularity.sh
     ```
     
