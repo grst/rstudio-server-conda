@@ -3,33 +3,57 @@
 I usually rely on the [conda package manager](https://docs.conda.io/en/latest/) to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. For production,
 I [convert them to containers](https://github.com/grst/containerize-conda) as these are easier to share. 
 
-Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This repository provides two approaches to make rstudio server work with conda envs. 
+Unfortunately, there seems to be [no straightforward way](https://community.rstudio.com/t/start-rstudio-server-session-in-conda-environment/12516/15) to use conda envs in Rstudio server. This repository provides three approaches to make rstudio server work with conda envs. 
 
- * [Running Rstudio Server in a Singularity Container](#running-rstudio-server-in-singularity)
- * [Running Rstudio Server in a Docker/Podman Container](#running-rstudio-server-in-a-container)
+ * [Running Rstudio Server in a Singularity Container](#running-rstudio-server-with-singularity)
+ * [Running Rstudio Server in a Docker/Podman Container](#running-rstudio-server-with-podmandocker)
  * [Running Rstudio Server locally](#running-locally)
 
-## Running Rstudio Server in Singularity
+## Running Rstudio Server with Singularity
 
-### Prerequisites
-
- * [Singularity]
- * [conda]
-
-### Usage
-
- 1. Activate the target conda env or set the environment variable `CONDA_PREFIX`
-    to point to the location of the conda env. 
- 2. 
-
-## Running Rstudio Server in a Container
-
-With this approach Rstudio Server runs in a Docker container (based on [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)).  
+With this approach Rstudio Server runs in a Singularity container (based on [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)).  
 The conda environment gets mounted into the container - like that there's no need to rebuild the container to add a package and 
 `install.packages` can be used without issues. The container-based approach has the following benefits: 
 
- * Authentication works (#3)
+ * Authentication works ([#3](https://github.com/grst/rstudio-server-conda/issues/3))
  * Several separate instances of Rstudio server can run in parallel, even without the *Pro* version. 
+
+### Prerequisites
+
+ * [Singularity](https://sylabs.io/guides/3.0/user-guide/quick_start.html)
+ * [conda](https://docs.conda.io/en/latest/miniconda.html) or [mamba](https://github.com/conda-forge/miniforge#mambaforge)
+
+
+### Usage
+
+ 1. Clone this repository
+
+    ```bash
+    git clone git@github.com:grst/rstudio-server-conda.git
+    ```
+   
+ 2. Activate the target conda env or set the environment variable `CONDA_PREFIX`
+    to point to the location of the conda env. 
+ 
+ 3. Execute the `run_singularity.sh` script. It will automatically build the container if it is not available. 
+ 
+    ```bash
+    cd rstudio-server-conda/singularity
+    PORT=8787 PASSWORD=notsafe ./run_singularity.sh
+    ```
+    
+ 4. Log into Rstudio
+
+     * open rstudio server at `http://localhost:8787` (or whatever port you specified)
+     * login with your default username and the password you specified via the `PASSWORD` environment variable. 
+
+## Running Rstudio Server with Podman/Docker
+
+This approach is similar to [Singularity](#running-rstudio-server-with-singularity), but uses
+Docker or Podman and a `docker-compose.yml` file instead. 
+
+### Known limitations
+ * No access to shared group directories ([#14](https://github.com/grst/rstudio-server-conda/issues/14))
 
 ### Prerequisites
 
@@ -83,7 +107,7 @@ The conda environment gets mounted into the container - like that there's no nee
 
 5. Log into Rstudio
 
- * Open your server at `https://localhost:8889` (or whatever port you specified)
+ * Open your server at `http://localhost:8889` (or whatever port you specified)
  * Login with the user `rstudio` (when using Docker) or `root` (when using Podman) and the password you specified 
    in the `docker-compose.yml`. If you are using Podman and login with `rstudio` you won't have permissions to 
    access the mounted volumes. 
@@ -92,8 +116,9 @@ The conda environment gets mounted into the container - like that there's no nee
 ## Running Locally
 
 With this approach a locally installed Rstudio server is ran such that it uses the conda env. 
-A known limitation of this approch is that the Rstudio authentication is bypassed (see #3). 
-Therefore, only use this approach in a secure network! 
+
+### Known limitations
+ * no authentication ([#3](https://github.com/grst/rstudio-server-conda/issues/3)). Use this approach only in a secure network! 
 
 ### Prerequisites
 * [rstudio server](https://www.rstudio.com/products/rstudio/download-server/) installed locally
