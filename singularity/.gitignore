@@ -1,6 +1,4 @@
 *.sif
-database.conf
-rsession.conf
 var-lib-rstudio-server
 run
 tmp
