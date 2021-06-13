@@ -164,7 +164,7 @@ With this approach a locally installed Rstudio server is ran such that it uses t
       --rsession-ld-library-path=$CONDA_PREFIX/lib
    ```
    
-* To avoid additional problems with library paths, also `rsession` needs to run within the conda environment. This is achieved by wrapping `rsession` into the [rsession.sh](https://github.com/grst/rstudio-server-conda/blob/master/rsession.sh) script. The path to the wrapped `rsession` executable can be passed to `rserver` as command line argument. 
+* To avoid additional problems with library paths, also `rsession` needs to run within the conda environment. This is achieved by wrapping `rsession` into the [rsession.sh](https://github.com/grst/rstudio-server-conda/blob/master/local/rsession.sh) script. The path to the wrapped `rsession` executable can be passed to `rserver` as command line argument. 
 
    ```
    rserver # ...
