@@ -25,15 +25,16 @@ if [ -z "$CONDA_PREFIX" ]; then
 fi
 
 echo "Starting rstudio service on port $PORT ..."
+echo "Temporary directory is $RSTUDIO_TMP"
 singularity exec \
 	--bind $RSTUDIO_TMP/run:/run \
 	--bind $RSTUDIO_TMP/var-lib-rstudio-server:/var/lib/rstudio-server \
   --bind /sys/fs/cgroup/:/sys/fs/cgroup/:ro \
 	--bind database.conf:/etc/rstudio/database.conf \
 	--bind rsession.conf:/etc/rstudio/rsession.conf \
-  --bind $RSTUDIO_TMP/local-share-rstudio:/home/rstudio/.local/share/rstudio \
+  --bind $RSTUDIO_TMP/local-share-rstudio:/home/$USER/.local/share/rstudio \
 	--bind ${CONDA_PREFIX}:${CONDA_PREFIX} \
-	--bind $HOME/.config/rstudio:/home/rstudio/.config/rstudio \
+	--bind $HOME/.config/rstudio:/home/$USER/.config/rstudio \
   `# add additional bind mount required for your use-case` \
   --bind /data:/data \
   --env CONDA_PREFIX=$CONDA_PREFIX \
