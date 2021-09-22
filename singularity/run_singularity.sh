@@ -29,20 +29,18 @@ echo "Temporary directory is $RSTUDIO_TMP"
 singularity exec \
 	--bind $RSTUDIO_TMP/run:/run \
 	--bind $RSTUDIO_TMP/var-lib-rstudio-server:/var/lib/rstudio-server \
-  --bind /sys/fs/cgroup/:/sys/fs/cgroup/:ro \
+	--bind /sys/fs/cgroup/:/sys/fs/cgroup/:ro \
 	--bind database.conf:/etc/rstudio/database.conf \
 	--bind rsession.conf:/etc/rstudio/rsession.conf \
-  --bind $RSTUDIO_TMP/local-share-rstudio:/home/$USER/.local/share/rstudio \
+	--bind $RSTUDIO_TMP/local-share-rstudio:/home/$USER/.local/share/rstudio \
 	--bind ${CONDA_PREFIX}:${CONDA_PREFIX} \
 	--bind $HOME/.config/rstudio:/home/$USER/.config/rstudio \
-  `# add additional bind mount required for your use-case` \
-  --bind /data:/data \
-  --env CONDA_PREFIX=$CONDA_PREFIX \
+	`# add additional bind mount required for your use-case` \
+	--env CONDA_PREFIX=$CONDA_PREFIX \
 	--env RSTUDIO_WHICH_R=$R_BIN \
 	--env RETICULATE_PYTHON=$PY_BIN \
 	--env PASSWORD=$PASSWORD \
-  --env PORT=$PORT \
+	--env PORT=$PORT \
 	rstudio_latest.sif \
-  /init.sh
-
+	/init.sh
 
