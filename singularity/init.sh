@@ -10,5 +10,6 @@ source /opt/conda/etc/profile.d/conda.sh && \
     `# optional: old behaviour of R sessions` \
     --auth-timeout-minutes=0 --auth-stay-signed-in-days=30  \
     `# activate password authentication` \
-    --auth-none=0  --auth-pam-helper-path=pam-helper
+    --auth-none=0  --auth-pam-helper-path=pam-helper \
+    --server-user $USER
 
