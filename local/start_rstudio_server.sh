@@ -6,7 +6,7 @@
 ##############################################
 
 CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-USER=`whoami`
+USER=$(whoami)
 # set a user-specific secure cookie key
 COOKIE_KEY_PATH=/tmp/rstudio-server/${USER}_secure-cookie-key
 rm -f $COOKIE_KEY_PATH
@@ -40,6 +40,7 @@ export RETICULATE_PYTHON=$CONDA_PREFIX/bin/python
   --rsession-which-r=$(which R) \
   --rsession-ld-library-path=$CONDA_PREFIX/lib \
   --rsession-path="$CWD/rsession.sh" \
+  --server-user $USER \
   $REVOCATION_LIST_PAR
 
 

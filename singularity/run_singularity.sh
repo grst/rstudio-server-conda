@@ -4,6 +4,7 @@
 
 # Main parameters for the script with default values
 PORT=${PORT:-8787}
+USER=$(whoami)
 PASSWORD=${PASSWORD:-notsafe}
 TMPDIR=${TMPDIR:-tmp}
 CONTAINER="rstudio_latest.sif"  # path to singularity container (will be automatically downloaded)
@@ -41,6 +42,7 @@ singularity exec \
 	--env RETICULATE_PYTHON=$PY_BIN \
 	--env PASSWORD=$PASSWORD \
 	--env PORT=$PORT \
+	--env USER=$USER \
 	rstudio_latest.sif \
 	/init.sh
 
