@@ -30,7 +30,7 @@ echo "Home is $HOME"
 echo "Conda prefix is $CONDA_PREFIX"
 echo "R bin is $R_BIN"
 
-singularity exec \
+singularity shell \
 	--bind $RSTUDIO_TMP/run:/run \
 	--bind $RSTUDIO_TMP/var-lib-rstudio-server:/var/lib/rstudio-server \
 	--bind /sys/fs/cgroup/:/sys/fs/cgroup/:ro \
@@ -49,6 +49,6 @@ singularity exec \
 	--env PORT=$PORT \
 	--env USER=$USER \
 	rstudio_latest.sif \
-	./init.sh
+
 
 
