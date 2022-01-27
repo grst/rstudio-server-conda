@@ -31,6 +31,7 @@ echo "Conda prefix is $CONDA_PREFIX"
 echo "R bin is $R_BIN"
 
 singularity shell \
+	`#--no-home` \
 	--bind $RSTUDIO_TMP/run:/run \
 	--bind $RSTUDIO_TMP/var-lib-rstudio-server:/var/lib/rstudio-server \
 	--bind /sys/fs/cgroup/:/sys/fs/cgroup/:ro \
@@ -41,7 +42,7 @@ singularity shell \
 	--bind $HOME/.config/rstudio:/home/rstudio/.config/rstudio \
         `# add additional bind mount required for your use-case` \
 	--bind /opt:/opt \
-	--bind /data/:/data \
+	--bind /data/:/data/ \
 	--env CONDA_PREFIX=$CONDA_PREFIX \
 	--env RSTUDIO_WHICH_R=$R_BIN \
 	--env RETICULATE_PYTHON=$PY_BIN \
