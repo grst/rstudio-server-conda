@@ -32,7 +32,6 @@ echo "R bin is $R_BIN"
 echo "Container is $CONTAINER"
 
 singularity exec \
-	--no-home \
 	`#TODO: are any of these not important` \
 	--bind $RSTUDIO_TMP/run:/run \
 	--bind $RSTUDIO_TMP/var-lib-rstudio-server:/var/lib/rstudio-server \
