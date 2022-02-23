@@ -1,0 +1,3 @@
+MOUNT_PATHS: "/mnt/morbo/Data/Public/parigi_spatial_intestine/:/mnt/morbo/Data/Public/parigi_spatial_intestine/"
+CONTAINER: "/reference/containers/singularity/images/spatial_tx.sif"  
+# path to singularity container (will be automatically downloaded)
