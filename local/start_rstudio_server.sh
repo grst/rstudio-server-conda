@@ -34,13 +34,19 @@ echo $CONDA_PREFIX > $CONDA_ENV_PATH
 
 export RETICULATE_PYTHON=$CONDA_PREFIX/bin/python
 
+# store the current path in database config
+sed -i "s,directory=.*,directory=\/tmp\/rstudio-server\/${USER}_database," $CWD/database.conf
+
 /usr/lib/rstudio-server/bin/rserver --server-daemonize=0 \
   --www-port=$1 \
   --secure-cookie-key-file=$COOKIE_KEY_PATH \
+  --server-pid-file="$CWD/rstudio-server.pid" \
+  --server-data-dir="$CWD/rstudio-server" \
   --rsession-which-r=$(which R) \
   --rsession-ld-library-path=$CONDA_PREFIX/lib \
   --rsession-path="$CWD/rsession.sh" \
   --server-user $USER \
+  --database-config-file "$CWD/database.conf" \
   $REVOCATION_LIST_PAR
 
 
